@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class SpectrumAnalyzer : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class SpectrumAnalyzer : MonoBehaviour
     [SerializeField] private float _lowFreqThreshold = 14700f;
     [SerializeField] private float _midFreqThreshold = 29400f;
     [SerializeField] private float _highFreqThreshold = 44100;
+
+    [SerializeField] private VisualEffect _vfx = null;
     
     private AudioSource _audio = null;
 
@@ -37,5 +40,8 @@ public class SpectrumAnalyzer : MonoBehaviour
         Debug.DrawLine(new Vector3(0, 0, 0), new Vector3(0, low, 0), Color.red);
         Debug.DrawLine(new Vector3(1, 0, 0), new Vector3(1, mid, 0), Color.blue);
         Debug.DrawLine(new Vector3(2, 0, 0), new Vector3(2, high, 0), Color.green);
+        
+        _vfx.SetVector4("Color", new Color(low, 0, 0, 0));
+        _vfx.SetFloat("Height", low);
     }
 }
