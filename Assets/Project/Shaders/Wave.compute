@@ -3,8 +3,9 @@
 Texture2D<float4> _WaveBufferRead;
 RWTexture2D<float4> _WaveBufferWrite;
 
-int _Width;
-int _Height;
+float _DeltaUV;
+half _S2;
+half _Atten;
 
 SamplerState _LinearClamp;
 
@@ -16,8 +17,14 @@ void Update(uint2 id : SV_DispatchThreadID)
     
     float3 px = float3(1.0/w, 1.0/h, 0.0);
     float2 uv = float2(id.x / w, id.y / h) + px.xy * 0.5;
+    float3 duv = px * _DeltaUV;
 
-    float4 color = _WaveBufferRead.SampleLevel(_LinearClamp, uv, 0);
+    float4 c = _WaveBufferRead.SampleLevel(_LinearClamp, uv, 0);
+    float p = (2.0 * c.r - c.g + _S2 * (
+        _WaveBufferRead.SampleLevel(_LinearClamp, uv - duv.zy, 0).r +
+        _WaveBufferRead.SampleLevel(_LinearClamp, uv + duv.zy, 0).r +
+        _WaveBufferRead.SampleLevel(_LinearClamp, uv - duv.xz, 0).r +
+        _WaveBufferRead.SampleLevel(_LinearClamp, uv + duv.xz, 0).r - 4.0 * c.r)) * _Atten;
 
-    _WaveBufferWrite[id] = color;
+    _WaveBufferWrite[id] = float4(p, c.r, 0, 1);
 }

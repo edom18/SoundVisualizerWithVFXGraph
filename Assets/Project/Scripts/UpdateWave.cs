@@ -49,26 +49,41 @@ public class UpdateWave : MonoBehaviour
 {
     [SerializeField] private ComputeShader _shader = null;
     [SerializeField] private Texture2D _texture = null;
+    [SerializeField] private float _deltaUV = 3f;
+    [SerializeField] private float _S2 = 0.5f;
+    [SerializeField] private float _atten = 0.999f;
 
     [SerializeField] private RawImage _preview = null;
 
     private SwapBuffer _swapBuffer = null;
-    
+    private int _kernel = 0;
+
     private void Start()
     {
         _swapBuffer = new SwapBuffer(_texture.width, _texture.height);
 
-        int kernel = -_shader.FindKernel("Update");
-        _shader.SetTexture(kernel, "_WaveBufferRead", _texture);
-        _shader.SetTexture(kernel, "_WaveBufferWrite", _swapBuffer.Current);
-        
-        _shader.Dispatch(kernel, _texture.width / 8, _texture.height / 8, 1);
-
-        _preview.texture = _swapBuffer.Current;
+        Graphics.Blit(_texture, _swapBuffer.Other);
     }
 
     private void Update()
     {
+        UpdateBuffer();
+    }
+
+    private void UpdateBuffer()
+    {
+        _kernel = -_shader.FindKernel("Update");
+        _shader.SetTexture(_kernel, "_WaveBufferRead", _swapBuffer.Other);
+        _shader.SetTexture(_kernel, "_WaveBufferWrite", _swapBuffer.Current);
+
+        _shader.SetFloat("_S2", _S2);
+        _shader.SetFloat("_Atten", _atten);
+        _shader.SetFloat("_DeltaUV", _deltaUV);
+
+        _shader.Dispatch(_kernel, _texture.width / 8, _texture.height / 8, 1);
+
+        _preview.texture = _swapBuffer.Current;
         
+        _swapBuffer.Swap();
     }
 }
