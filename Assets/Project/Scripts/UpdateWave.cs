@@ -56,6 +56,7 @@ public class UpdateWave : MonoBehaviour
 
     [SerializeField] private RawImage _preview = null;
     [SerializeField] private VisualEffect _vfx = null;
+    [SerializeField] private float _power = 0.1f;
 
     private SwapBuffer _swapBuffer = null;
     private int _kernel = 0;
@@ -64,17 +65,21 @@ public class UpdateWave : MonoBehaviour
     {
         _swapBuffer = new SwapBuffer(_texture.width, _texture.height);
 
-        Graphics.Blit(_texture, _swapBuffer.Other);
+        // Graphics.Blit(_texture, _swapBuffer.Other);
     }
 
     private void Update()
     {
-        UpdateBuffer();
+        bool down = Input.GetKeyDown(KeyCode.Space);
+        UpdateBuffer(down ? _power : 0);
     }
 
-    private void UpdateBuffer()
+    private void UpdateBuffer(float power)
     {
         _kernel = -_shader.FindKernel("Update");
+        
+        _shader.SetFloat("_Power", power);
+        
         _shader.SetTexture(_kernel, "_WaveBufferRead", _swapBuffer.Other);
         _shader.SetTexture(_kernel, "_WaveBufferWrite", _swapBuffer.Current);
 
