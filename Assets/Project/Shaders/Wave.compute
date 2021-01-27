@@ -1,0 +1,23 @@
+﻿#pragma kernel Update
+
+Texture2D<float4> _WaveBufferRead;
+RWTexture2D<float4> _WaveBufferWrite;
+
+int _Width;
+int _Height;
+
+SamplerState _LinearClamp;
+
+[numthreads(8,8,1)]
+void Update(uint2 id : SV_DispatchThreadID)
+{
+    float w, h;
+    _WaveBufferRead.GetDimensions(w, h);
+    
+    float3 px = float3(1.0/w, 1.0/h, 0.0);
+    float2 uv = float2(id.x / w, id.y / h) + px.xy * 0.5;
+
+    float4 color = _WaveBufferRead.SampleLevel(_LinearClamp, uv, 0);
+
+    _WaveBufferWrite[id] = color;
+}
