@@ -552,10 +552,11 @@ MonoBehaviour:
   _texture: {fileID: 2800000, guid: 63ef14faf2a3cd94d83b9abc5c44e7ca, type: 3}
   _deltaUV: 0.5
   _S2: 0.5
-  _atten: 0.99
+  _atten: 0.995
   _preview: {fileID: 334627071}
   _vfx: {fileID: 1306535639}
   _power: 0
+  _range: 0.1
 --- !u!4 &901000468
 Transform:
   m_ObjectHideFlags: 0
@@ -1128,13 +1129,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.56, y: 0.853, z: -2}
+  m_LocalRotation: {x: 0.09921959, y: -0, z: -0, w: 0.99506557}
+  m_LocalPosition: {x: 2.56, y: 0.86, z: -1.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.388, y: 0, z: 0}
 --- !u!114 &1687258586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,9 +1201,10 @@ MonoBehaviour:
   _lowFreqThreshold: 4700
   _midFreqThreshold: 29400
   _highFreqThreshold: 44100
-  _power: 0.5
+  _power: 0.05
   _vfx: {fileID: 1306535639}
   _updateWave: {fileID: 901000467}
+  _threshold: 0.1
 --- !u!4 &1774318149
 Transform:
   m_ObjectHideFlags: 0
