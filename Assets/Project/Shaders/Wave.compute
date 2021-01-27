@@ -6,8 +6,9 @@ RWTexture2D<float4> _WaveBufferWrite;
 float _DeltaUV;
 half _S2;
 half _Atten;
+float _Range;
 
-float _Power;
+float4 _PowerSpot;
 
 SamplerState _LinearClamp;
 
@@ -22,9 +23,9 @@ void Update(uint2 id : SV_DispatchThreadID)
     float3 duv = px * _DeltaUV;
 
     float2 center = uv * 2.0 - 1.0;
-    float len = length(center);
+    float len = length(center - _PowerSpot.xy);
     
-    float power = (1.0 - smoothstep(0.0, 0.1, len)) * _Power;
+    float power = (1.0 - smoothstep(0.0, _Range, len)) * _PowerSpot.z;
 
     float4 c = _WaveBufferRead.SampleLevel(_LinearClamp, uv, 0);
     float p = (2.0 * c.r - c.g + _S2 * (

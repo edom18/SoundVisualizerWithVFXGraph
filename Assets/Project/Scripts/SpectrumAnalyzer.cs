@@ -45,10 +45,10 @@ public class SpectrumAnalyzer : MonoBehaviour
         Debug.DrawLine(new Vector3(1, 0, 0), new Vector3(1, mid, 0), Color.blue);
         Debug.DrawLine(new Vector3(2, 0, 0), new Vector3(2, high, 0), Color.green);
 
-        float p = low < _threshold ? 0 : 1f;
+        float target = low;
+        float p = target < _threshold ? 0 : 1f;
+        _updateWave.Power = target * p * _power;
 
-        _updateWave.Power = low * p * _power;
-
-        _vfx.SetVector4("Color", new Color(low, 0, 0, 1));
+        _vfx.SetVector4("Color", new Color(0.1f, high, mid, 1));
     }
 }

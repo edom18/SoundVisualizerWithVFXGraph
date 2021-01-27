@@ -57,6 +57,7 @@ public class UpdateWave : MonoBehaviour
     [SerializeField] private RawImage _preview = null;
     [SerializeField] private VisualEffect _vfx = null;
     [SerializeField] private float _power = 0.0f;
+    [SerializeField] private float _range = 0.1f;
 
     private SwapBuffer _swapBuffer = null;
     private int _kernel = 0;
@@ -82,8 +83,9 @@ public class UpdateWave : MonoBehaviour
     private void UpdateBuffer(float power)
     {
         _kernel = -_shader.FindKernel("Update");
-        
-        _shader.SetFloat("_Power", power);
+
+        _shader.SetVector("_PowerSpot", new Vector4(0, 0, power, 0));
+        _shader.SetFloat("_Range", _range);
         
         _shader.SetTexture(_kernel, "_WaveBufferRead", _swapBuffer.Other);
         _shader.SetTexture(_kernel, "_WaveBufferWrite", _swapBuffer.Current);
