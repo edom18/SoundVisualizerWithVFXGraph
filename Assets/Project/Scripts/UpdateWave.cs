@@ -56,10 +56,16 @@ public class UpdateWave : MonoBehaviour
 
     [SerializeField] private RawImage _preview = null;
     [SerializeField] private VisualEffect _vfx = null;
-    [SerializeField] private float _power = 0.1f;
+    [SerializeField] private float _power = 0.0f;
 
     private SwapBuffer _swapBuffer = null;
     private int _kernel = 0;
+
+    public float Power
+    {
+        get => _power;
+        set => _power = value;
+    }
 
     private void Start()
     {
@@ -70,8 +76,7 @@ public class UpdateWave : MonoBehaviour
 
     private void Update()
     {
-        bool down = Input.GetKeyDown(KeyCode.Space);
-        UpdateBuffer(down ? _power : 0);
+        UpdateBuffer(Power);
     }
 
     private void UpdateBuffer(float power)

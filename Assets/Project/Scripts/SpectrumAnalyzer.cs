@@ -10,8 +10,12 @@ public class SpectrumAnalyzer : MonoBehaviour
     [SerializeField] private float _midFreqThreshold = 29400f;
     [SerializeField] private float _highFreqThreshold = 44100;
 
+    [SerializeField] private float _power = 0.1f;
     [SerializeField] private VisualEffect _vfx = null;
-    
+    [SerializeField] private UpdateWave _updateWave = null;
+
+    [SerializeField] private float _threshold = 0.5f;
+
     private AudioSource _audio = null;
 
     private void Start()
@@ -30,18 +34,21 @@ public class SpectrumAnalyzer : MonoBehaviour
         for (int i = 1; i < spectrum.Length - 1; ++i)
         {
             var freq = deltaFreq * i;
-            if      (freq <= _lowFreqThreshold) low += spectrum[i];
+            if (freq <= _lowFreqThreshold) low += spectrum[i];
             else if (freq <= _midFreqThreshold) mid += spectrum[i];
             else if (freq <= _highFreqThreshold) high += spectrum[i];
         }
 
-        Debug.Log($"Low:{low}, Mid:{mid}, High:{high}");
+        // Debug.Log($"Low:{low}, Mid:{mid}, High:{high}");
 
         Debug.DrawLine(new Vector3(0, 0, 0), new Vector3(0, low, 0), Color.red);
         Debug.DrawLine(new Vector3(1, 0, 0), new Vector3(1, mid, 0), Color.blue);
         Debug.DrawLine(new Vector3(2, 0, 0), new Vector3(2, high, 0), Color.green);
-        
-        // _vfx.SetVector4("Color", new Color(low, 0, 0, 1));
-        // _vfx.SetFloat("Height", low);
+
+        float p = low < _threshold ? 0 : 1f;
+
+        _updateWave.Power = low * p * _power;
+
+        _vfx.SetVector4("Color", new Color(low, 0, 0, 1));
     }
 }
