@@ -41,7 +41,7 @@ public class SpectrumAnalyzer : MonoBehaviour
         Debug.DrawLine(new Vector3(1, 0, 0), new Vector3(1, mid, 0), Color.blue);
         Debug.DrawLine(new Vector3(2, 0, 0), new Vector3(2, high, 0), Color.green);
         
-        _vfx.SetVector4("Color", new Color(low, 0, 0, 0));
-        _vfx.SetFloat("Height", low);
+        // _vfx.SetVector4("Color", new Color(low, 0, 0, 1));
+        // _vfx.SetFloat("Height", low);
     }
 }

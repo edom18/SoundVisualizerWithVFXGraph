@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class SwapBuffer
 {
@@ -54,6 +55,7 @@ public class UpdateWave : MonoBehaviour
     [SerializeField] private float _atten = 0.999f;
 
     [SerializeField] private RawImage _preview = null;
+    [SerializeField] private VisualEffect _vfx = null;
 
     private SwapBuffer _swapBuffer = null;
     private int _kernel = 0;
@@ -83,6 +85,7 @@ public class UpdateWave : MonoBehaviour
         _shader.Dispatch(_kernel, _texture.width / 8, _texture.height / 8, 1);
 
         _preview.texture = _swapBuffer.Current;
+        _vfx.SetTexture("HeightMap", _swapBuffer.Current);
         
         _swapBuffer.Swap();
     }
